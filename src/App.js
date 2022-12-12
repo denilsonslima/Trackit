@@ -3,16 +3,18 @@ import InitialPage from "./pages/InitialPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import FistPage from "./pages/FistPage";
+import { useState } from "react";
 
 function App() {
+  const [token, setToken] = useState("")
   return (
     <div className="App">
       <GlobalStyle />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<InitialPage />}></Route>
+          <Route path="/" element={<InitialPage setToken={setToken}/>}></Route>
           <Route path="/cadastro" element={<LoginPage />}></Route>
-          <Route path="/hoje" element={<FistPage/>}></Route>
+          <Route path="/hoje" element={<FistPage token={token}/>}></Route>
         </Routes>
       </BrowserRouter>
     </div>

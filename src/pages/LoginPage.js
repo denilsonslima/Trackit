@@ -67,7 +67,7 @@ export default function LoginPage() {
 }
 
 const Main = styled.div`
-    max-width: 600px;
+    max-width: 500px;
     width: 100vw;
     height: 95vh;
     background-color: #FFFFFF;

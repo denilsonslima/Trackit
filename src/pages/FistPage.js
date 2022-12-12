@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
+import Footer from "../components/Footer";
 import Heade from "../components/Heade";
-export default function FistPage() {
+import axios from "axios";
+
+export default function FistPage({ token }) {
     const [addHabito, setAddHabito] = useState(false)
     const [clicado, setClicado] = useState([])
     const [input, setInput] = useState("")
+    const [meusHabitos, setMeusHabitos] = useState([])
+    const [chegou, setChegou] = useState(false)
     const diasSemana = [
         { id: 1, name: "D" },
         { id: 2, name: "S" },
@@ -15,13 +20,40 @@ export default function FistPage() {
         { id: 7, name: "S" },
     ]
 
+    useEffect(() => {
+        const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+        renderizar(url)
+    }, [])
+
     function verificar(e) {
         e.preventDefault()
         if (clicado.length !== 0) {
             setAddHabito(false)
+            const dados = {
+                name: input,
+                days: clicado
+            }
+            criarHabito(dados)
             setClicado([])
             setInput("")
         }
+    }
+
+    function criarHabito(dados) {
+        const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+        const config = { headers: { Authorization: `Bearer ${token}` } }
+        const promisse = axios.post(url, dados, config)
+        promisse.then(() => renderizar(url))
+        promisse.catch((err) => console.log(err))
+    }
+
+    function renderizar(url) {
+        const promisse = axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
+        promisse.then(res => {
+            setMeusHabitos([...res.data])
+            setChegou(true)
+        })
+        promisse.catch((e) => console.log(e))
     }
 
     function add(a, i) {
@@ -34,15 +66,40 @@ export default function FistPage() {
         }
     }
 
+    if (!chegou) {
+        return (
+            <Main>
+                <Heade />
+                <Section1>
+                    <Div>
+                        <h2>Meus hábitos</h2>
+                        <Botao>+</Botao>
+                    </Div>
+                    <Descricao
+                        display={meusHabitos.length === 0 ? "block" : "none"}
+                    >
+                        <h2>
+                            Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
+                        </h2>
+                    </Descricao>
+                </Section1>
+                <Footer />
+            </Main>
+        )
+    }
+
     return (
         <Main>
             <Heade />
-            <section>
+            <Section1>
                 <Div>
                     <h2>Meus hábitos</h2>
                     <Botao onClick={() => setAddHabito(true)}>+</Botao>
                 </Div>
-                <Modal display={addHabito ? "block" : "none"} onSubmit={verificar}>
+                <Modal
+                    display={addHabito ? "block" : "none"}
+                    onSubmit={verificar}
+                >
                     <input
                         type="text"
                         placeholder="nome do hábito"
@@ -61,36 +118,60 @@ export default function FistPage() {
                         )}
                     </div>
                     <div>
-                        <p>Cancelar</p>
+                        <p onClick={() => setAddHabito(false)}>Cancelar</p>
                         <button type="submit">Salvar</button>
                     </div>
                 </Modal>
-                <Descricao>
+                <Descricao
+                    display={meusHabitos.length === 0 ? "block" : "none"}
+                >
                     <h2>
                         Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
                     </h2>
                 </Descricao>
-            </section>
+                <Hab>
+                    {meusHabitos.map((d) =>
+                        <div key={d.id}>
+                            <h4>{d.name}</h4>
+                            <div>
+                                {diasSemana.map((e) =>
+                                    <Btn
+                                        key={e.id}
+                                        cor={d.days.includes(e.id) ? "#CFCFCF" : "#FFFFFF"}
+                                    >
+                                        {e.name}
+                                    </Btn>
+                                )}
+                            </div>
+                        </div>
+                    )}
+                </Hab>
+            </Section1>
+            <Footer />
         </Main>
     )
 }
 
 const Main = styled.div`
     position: relative;
-    max-width: 600px;
+    max-width: 500px;
     width: 100vw;
     height: 95vh;
-    background: #E5E5E5;
+    background: #F2F2F2;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    section {
-        padding: 80px 20px 0;
-    }
-
+    overflow-y: hidden;
 
     @media (max-width: 600px){
         height: 100vh;
     }
 
+`
+
+const Section1 = styled.div`
+    height: calc(95vh - 160px);
+    padding: 0 20px 20px;
+    margin: 80px 0;
+    overflow-y: scroll;
 `
 
 const Div = styled.div`
@@ -122,18 +203,30 @@ const Modal = styled.form`
     input {
         width: 100%;
         height: 45px;
-        padding: 15px 0 11px 9px;
+        padding-left: 15px;
         border: 1px solid #D5D5D5;
         border-radius: 5px;
-        ::placeholder {
-            font-family: 'Lexend Deca';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 19.976px;
-            line-height: 25px;
-            color: #DBDBDB;
-        }
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 25px;
+        color: #666666;
+    } 
+
+    input::placeholder {
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 25px;
+        color: #DBDBDB;
     }
+
+    input:focus::-webkit-input-placeholder {
+        color: transparent;
+    }
+
     div:nth-of-type(1) {
         margin-top: 10px;
         margin-bottom: 29px;
@@ -154,6 +247,7 @@ const Modal = styled.form`
             color: #FFFFFF;
             font-size: 16px;
             border-radius: 5px;
+            border: 5px 80% red; 
         }
         & p {
             width: 69px;
@@ -172,6 +266,7 @@ const Modal = styled.form`
 
 const Descricao = styled.div`
     padding-top: 28px;
+    display: ${props => props.display};
     h2 {
         font-family: 'Lexend Deca';
         font-style: normal;
@@ -200,4 +295,29 @@ const Btn = styled.button`
     border-radius: 5px;
     color: #DBDBDB;
     font-size: 20px;
+`
+
+const Hab = styled.section`
+    min-height: 91px;
+    & div {
+        max-width: 340px;
+        padding: 15px;
+        margin: 20px auto 0;
+        background-color: #FFFFFF;
+        border-radius: 5px;
+        & h4 {
+            font-family: 'Lexend Deca';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 25px;
+            color: #666666;
+        }
+        & div {
+            padding: 0;
+            margin-top: 10px;
+            display: flex;
+            gap: 5px;
+        }
+    }
 `
