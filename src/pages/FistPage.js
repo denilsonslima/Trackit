@@ -23,7 +23,7 @@ export default function FistPage({ token }) {
     useEffect(() => {
         const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
         renderizar(url)
-    }, [])
+    })
 
     function verificar(e) {
         e.preventDefault()
@@ -156,15 +156,15 @@ const Main = styled.div`
     position: relative;
     max-width: 500px;
     width: 100vw;
-    height: 95vh;
+    max-height: 100vh;
+    height: 95%;
     background: #F2F2F2;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     overflow-y: hidden;
 
-    @media (max-width: 600px){
-        height: 100vh;
+    @media (max-width: 400px){
+        height: 100%;
     }
-
 `
 
 const Section1 = styled.div`

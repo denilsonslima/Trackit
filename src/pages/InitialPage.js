@@ -57,7 +57,8 @@ export default function InitialPage({setToken}) {
 const Main = styled.div`
     max-width: 500px;
     width: 100vw;
-    height: 95vh;
+    max-height: 100vh;
+    height: 95%;
     background-color: #FFFFFF;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     padding: 0 36px;
@@ -76,8 +77,8 @@ const Main = styled.div`
         margin-top: 25px;
     }
     
-    @media (max-width: 600px){
-        height: 100vh;
+    @media (max-width: 400px){
+        height: 100%;
     }
 
 `
