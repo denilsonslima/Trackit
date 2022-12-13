@@ -7,28 +7,18 @@ import { useState } from "react";
 
 function App() {
   const [token, setToken] = useState("")
+  const [image, setImage] = useState("")
   return (
     <div className="App">
       <GlobalStyle />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<InitialPage setToken={setToken}/>}></Route>
+          <Route path="/" element={<InitialPage setToken={setToken} setImage={setImage}/>}></Route>
           <Route path="/cadastro" element={<LoginPage />}></Route>
-          <Route path="/hoje" element={<FistPage token={token}/>}></Route>
+          <Route path="/hoje" element={<FistPage token={token} image={image}/>}></Route>
         </Routes>
       </BrowserRouter>
     </div>
   );
 }
-
 export default App;
-
-{/* <BrowserRouter>
-<NavBar />
-<Routes>
-  
-  <Route path="/sessoes/:idFilme" element={<Horario infoFilme={infoFilme} setInfoFilme={setInfoFilme}/>}></Route>
-  <Route path="/assentos/:idSessao" element={<Assentos infoFilme={infoFilme} setInfoFilme={setInfoFilme}/>}></Route>
-  <Route path="/sucesso" element={<Confirmacao infoFilme={infoFilme}/>}/>
-</Routes>
-</BrowserRouter> */}

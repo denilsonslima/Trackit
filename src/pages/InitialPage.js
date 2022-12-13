@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
 
-export default function InitialPage({setToken}) {
+export default function InitialPage({setToken, setImage}) {
     const [email, setEmail] = useState("")
     const [senha, setSenha] = useState("")
     const navigate = useNavigate()
@@ -20,7 +20,8 @@ export default function InitialPage({setToken}) {
         const promisse = axios.post(url, dados)
         promisse.then((res) => {
             setToken(res.data.token)
-            navigate("/hoje", res)
+            setImage(res.data.image)
+            navigate("/hoje")
             setEmail("")
             setSenha("")
         })

@@ -1,10 +1,12 @@
 import styled from "styled-components"
 
-export default function Heade() {
+export default function Heade({image}) {
     return (
         <Main>
             <p>TrackIt</p>
-            <Div/>
+            <div>
+                <img src={image} onError="https://cdn-icons-png.flaticon.com/512/5987/5987462.png"/>
+            </div>
         </Main>
     )
 }
@@ -28,11 +30,17 @@ const Main = styled.div`
         color: #FFFFFF;
         text-decoration: none;
     } 
-`
-const Div = styled.div`
-    width: 51px;
-    height: 51px;
-    border-radius: 50%;
-    background: url("https://i0.wp.com/omeudiadia.com.br/wp-content/uploads/2022/04/paisagem-natural.jpg?resize=800%2C534&ssl=1") no-repeat center;
-    background-size: cover;
+    & div:nth-of-type(1){
+        width: 51px;
+        height: 51px;
+        background-color: #FFFFFF;
+        border-radius: 50%;
+        overflow: hidden;
+        & img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            text-align: center;
+        }
+    }
 `

@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import Heade from "../components/Heade";
 import axios from "axios";
 
-export default function FistPage({ token }) {
+export default function FistPage({ token, image }) {
     const [addHabito, setAddHabito] = useState(false)
     const [clicado, setClicado] = useState([])
     const [input, setInput] = useState("")
@@ -69,7 +69,7 @@ export default function FistPage({ token }) {
     if (!chegou) {
         return (
             <Main>
-                <Heade />
+                <Heade image={image}/>
                 <Section1>
                     <Div>
                         <h2>Meus hábitos</h2>
@@ -90,7 +90,7 @@ export default function FistPage({ token }) {
 
     return (
         <Main>
-            <Heade />
+            <Heade image={image}/>
             <Section1>
                 <Div>
                     <h2>Meus hábitos</h2>
