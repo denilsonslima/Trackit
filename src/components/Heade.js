@@ -5,7 +5,7 @@ export default function Heade({image}) {
         <Main>
             <p>TrackIt</p>
             <div>
-                <img src={image} onError="https://cdn-icons-png.flaticon.com/512/5987/5987462.png"/>
+                <img src={image} alt="Perfil"/>
             </div>
         </Main>
     )

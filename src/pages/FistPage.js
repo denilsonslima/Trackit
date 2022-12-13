@@ -3,27 +3,37 @@ import styled from "styled-components";
 import Footer from "../components/Footer";
 import Heade from "../components/Heade";
 import axios from "axios";
+import { RiDeleteBin6Line } from "react-icons/ri"
 
-export default function FistPage({ token, image }) {
+export default function Hoje({ token, image, concluido }) {
     const [addHabito, setAddHabito] = useState(false)
     const [clicado, setClicado] = useState([])
     const [input, setInput] = useState("")
     const [meusHabitos, setMeusHabitos] = useState([])
     const [chegou, setChegou] = useState(false)
     const diasSemana = [
-        { id: 1, name: "D" },
-        { id: 2, name: "S" },
-        { id: 3, name: "T" },
+        { id: 0, name: "D" },
+        { id: 1, name: "S" },
+        { id: 2, name: "T" },
+        { id: 3, name: "Q" },
         { id: 4, name: "Q" },
-        { id: 5, name: "Q" },
+        { id: 5, name: "S" },
         { id: 6, name: "S" },
-        { id: 7, name: "S" },
     ]
 
     useEffect(() => {
         const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
         renderizar(url)
     })
+
+    function renderizar(url) {
+        const promisse = axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
+        promisse.then(res => {
+            setMeusHabitos([...res.data])
+            setChegou(true)
+        })
+        promisse.catch((e) => console.log(e))
+    }
 
     function verificar(e) {
         e.preventDefault()
@@ -43,17 +53,11 @@ export default function FistPage({ token, image }) {
         const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
         const config = { headers: { Authorization: `Bearer ${token}` } }
         const promisse = axios.post(url, dados, config)
-        promisse.then(() => renderizar(url))
-        promisse.catch((err) => console.log(err))
-    }
-
-    function renderizar(url) {
-        const promisse = axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
-        promisse.then(res => {
-            setMeusHabitos([...res.data])
-            setChegou(true)
+        promisse.then(() => {
+            renderizar(url)
+            setClicado([])
         })
-        promisse.catch((e) => console.log(e))
+        promisse.catch((err) => console.log(err))
     }
 
     function add(a, i) {
@@ -66,10 +70,21 @@ export default function FistPage({ token, image }) {
         }
     }
 
+    function deletarHabito(id) {
+        let a = id
+        const url1 = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+        const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/" + a.toString()
+        const promisse = axios.delete(url, { headers: { Authorization: `Bearer ${token}` } })
+        promisse.then(() =>
+            renderizar(url1)
+        )
+        promisse.catch(e => console.log(e))
+    }
+
     if (!chegou) {
         return (
             <Main>
-                <Heade image={image}/>
+                <Heade image={image} />
                 <Section1>
                     <Div>
                         <h2>Meus hábitos</h2>
@@ -83,14 +98,14 @@ export default function FistPage({ token, image }) {
                         </h2>
                     </Descricao>
                 </Section1>
-                <Footer />
+                <Footer concluido={concluido}/>
             </Main>
         )
     }
 
     return (
         <Main>
-            <Heade image={image}/>
+            <Heade image={image} />
             <Section1>
                 <Div>
                     <h2>Meus hábitos</h2>
@@ -111,6 +126,7 @@ export default function FistPage({ token, image }) {
                             <Btn
                                 key={e.id}
                                 cor={clicado.includes(e.id) ? "#CFCFCF" : "#FFFFFF"}
+                                color={clicado.includes(e.id) ? "#FFFFFF" : "#DBDBDB"}
                                 onClick={(a) => add(a, e.id)}
                             >
                                 {e.name}
@@ -138,16 +154,18 @@ export default function FistPage({ token, image }) {
                                     <Btn
                                         key={e.id}
                                         cor={d.days.includes(e.id) ? "#CFCFCF" : "#FFFFFF"}
+                                        color={d.days.includes(e.id) ? "#FFFFFF" : "#DBDBDB"}
                                     >
                                         {e.name}
                                     </Btn>
                                 )}
                             </div>
+                            <RiDeleteBin6Line onClick={() => deletarHabito(d.id)}/>
                         </div>
                     )}
                 </Hab>
             </Section1>
-            <Footer />
+            <Footer concluido={concluido}/>
         </Main>
     )
 }
@@ -203,7 +221,7 @@ const Modal = styled.form`
     input {
         width: 100%;
         height: 45px;
-        padding-left: 15px;
+        padding: 0 7px 0 15px;
         border: 1px solid #D5D5D5;
         border-radius: 5px;
         font-family: 'Lexend Deca';
@@ -293,13 +311,14 @@ const Btn = styled.button`
     background: ${props => props.cor};
     border: 1px solid #D5D5D5;
     border-radius: 5px;
-    color: #DBDBDB;
+    color: ${props => props.color};
     font-size: 20px;
 `
 
 const Hab = styled.section`
     min-height: 91px;
     & div {
+        position: relative;
         max-width: 340px;
         padding: 15px;
         margin: 20px auto 0;
@@ -318,6 +337,14 @@ const Hab = styled.section`
             margin-top: 10px;
             display: flex;
             gap: 5px;
+        }
+        > svg {
+            font-size: 40px;
+            padding: 10px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            color: #666666;
         }
     }
 `

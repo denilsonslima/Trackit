@@ -52,9 +52,14 @@ const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
     }
 
+    html, body, #root, .App {
+        max-height: 100vh;
+        max-width: 100vw;
+        width: 100%;
+        height: 100%;
+    }
+
     .App {
-        width: 100vw;
-        height: 100vh;
         display: flex;
         flex-direction: column;
         align-items: center;

@@ -1,11 +1,13 @@
 import styled from "styled-components"
+import { useNavigate } from "react-router-dom"
 
-export default function Footer(){
+export default function Footer({concluido}){
+    const navigate = useNavigate()
     return (
         <Footerr>
-                <p>Hábitos</p>
+                <p onClick={() => navigate("/habito")}>Hábitos</p>
                 <p>Histórico</p>
-                <Div>
+                <Div onClick={() => navigate("/hoje")} concluido={concluido}>
                     <div className="div">
                         <div>Hoje</div>
                     </div>
@@ -46,7 +48,7 @@ const Div = styled.div`
     left: calc(50% - 90px/2);
     overflow: hidden;
     .div {
-        background: conic-gradient(white 10%, #52B6FF 0);
+        background: conic-gradient(white ${props => props.concluido + "%"}, #52B6FF 0);
         position: absolute;
         bottom: 10%;
         left: 10%;
