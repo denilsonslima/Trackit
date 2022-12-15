@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
 
-export default function InitialPage({setToken, setImage}) {
+export default function InitialPage({setTokenInLocalStorage}) {
     const [email, setEmail] = useState("")
     const [senha, setSenha] = useState("")
     const navigate = useNavigate()
@@ -19,8 +19,7 @@ export default function InitialPage({setToken, setImage}) {
         const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
         const promisse = axios.post(url, dados)
         promisse.then((res) => {
-            setToken(res.data.token)
-            setImage(res.data.image)
+            setTokenInLocalStorage(res.data)
             navigate("/hoje")
             setEmail("")
             setSenha("")
