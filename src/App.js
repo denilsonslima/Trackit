@@ -18,6 +18,13 @@ function App() {
     localStorage.setItem('lista', exemploSerializado);
   }
 
+  function verificar(dados) {
+    const total = dados.length
+    const feito = dados.filter((e) => e.done === true)
+    const porcentagem = Number((feito.length / total) * 100).toFixed(0)
+    setConcluido(porcentagem)
+  }
+
   useEffect(() => {
     const token = localStorage.getItem('lista');
     const lista = JSON.parse(token)
@@ -32,10 +39,10 @@ function App() {
       <GlobalStyle />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<InitialPage setTokenInLocalStorage={setTokenInLocalStorage}/>}></Route>
+          <Route path="/" element={<InitialPage setTokenInLocalStorage={setTokenInLocalStorage} />}></Route>
           <Route path="/cadastro" element={<LoginPage />}></Route>
-          <Route path="/habito" element={<FistPage token={token} image={image} concluido={concluido}/>}></Route>
-          <Route path="/hoje" element={<Hoje token={token} image={image} concluido={concluido} setConcluido={setConcluido}/>}></Route>
+          <Route path="/habito" element={<FistPage token={token} image={image} concluido={concluido} verificar={verificar}/>}></Route>
+          <Route path="/hoje" element={<Hoje token={token} image={image} concluido={concluido} verificar={verificar} />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

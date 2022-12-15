@@ -5,7 +5,7 @@ import Heade from "../components/Heade";
 import axios from "axios";
 import { RiDeleteBin6Line } from "react-icons/ri"
 
-export default function Hoje({ token, image, concluido }) {
+export default function Hoje({ token, image, concluido, verificar }) {
     const [addHabito, setAddHabito] = useState(false)
     const [clicado, setClicado] = useState([])
     const [input, setInput] = useState("")
@@ -20,10 +20,11 @@ export default function Hoje({ token, image, concluido }) {
         { id: 5, name: "S" },
         { id: 6, name: "S" },
     ]
-
+    
     useEffect(() => {
         const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
         renderizar(url)
+        mudar()
     })
 
     function renderizar(url) {
@@ -35,7 +36,16 @@ export default function Hoje({ token, image, concluido }) {
         promisse.catch((e) => console.log(e))
     }
 
-    function verificar(e) {
+    function mudar(){
+        const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
+        axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
+        .then(res => {
+            verificar(res.data)
+        })
+        .catch((e) => console.log(e))
+    }
+
+    function verifica(e) {
         e.preventDefault()
         if (clicado.length !== 0) {
             setAddHabito(false)
@@ -46,6 +56,7 @@ export default function Hoje({ token, image, concluido }) {
             criarHabito(dados)
             setClicado([])
             setInput("")
+            verificar()
         }
     }
 
@@ -113,7 +124,7 @@ export default function Hoje({ token, image, concluido }) {
                 </Div>
                 <Modal
                     display={addHabito ? "block" : "none"}
-                    onSubmit={verificar}
+                    onSubmit={verifica}
                 >
                     <input
                         type="text"

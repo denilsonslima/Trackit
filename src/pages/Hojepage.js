@@ -5,20 +5,13 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { BsCheckLg } from "react-icons/bs"
 
-export default function Hoje({ token, image, concluido, setConcluido }) {
+export default function Hoje({ token, image, concluido, verificar }) {
     const [meusHabitos, setMeusHabitos] = useState([])
 
     useEffect(() => {
         const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
         renderizar(url)
     })
-
-    function verificar(dados){
-        const total = dados.length
-        const feito = dados.filter((e) => e.done === true)
-        const porcentagem = Number((feito.length / total) * 100).toFixed(0)
-        setConcluido(porcentagem)
-    }
 
     function renderizar(url) {
         const promisse = axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
