@@ -1,10 +1,11 @@
 import GlobalStyle from "./globalStyles";
-import InitialPage from "./pages/InitialPage";
+import InitialPage from "./pages/Login";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
+import LoginPage from "./pages/Cadastro";
 import FistPage from "./pages/FistPage";
 import { useState, useEffect } from "react";
 import Hoje from "./pages/Hojepage";
+import Historico from "./pages/Historico";
 
 function App() {
   const [token, setToken] = useState("")
@@ -41,8 +42,9 @@ function App() {
         <Routes>
           <Route path="/" element={<InitialPage setTokenInLocalStorage={setTokenInLocalStorage} />}></Route>
           <Route path="/cadastro" element={<LoginPage />}></Route>
-          <Route path="/habito" element={<FistPage token={token} image={image} concluido={concluido} verificar={verificar}/>}></Route>
-          <Route path="/hoje" element={<Hoje token={token} image={image} concluido={concluido} verificar={verificar} />}></Route>
+          {token && <Route path="/habito" element={<FistPage token={token} image={image} concluido={concluido} verificar={verificar}/>}></Route>}
+          {token && <Route path="/hoje" element={<Hoje token={token} image={image} concluido={concluido} verificar={verificar} />}></Route>}
+          <Route path="/historico" element={<Historico image={image} concluido={concluido} token={token} verificar={verificar}/>}></Route>
         </Routes>
       </BrowserRouter>
     </div>

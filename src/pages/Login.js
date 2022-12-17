@@ -3,11 +3,12 @@ import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-
+import Loading from "../components/Loading";
 
 export default function InitialPage({setTokenInLocalStorage}) {
     const [email, setEmail] = useState("")
     const [senha, setSenha] = useState("")
+    const [carregando, setCarregando] = useState(false)
     const navigate = useNavigate()
 
     function autenticacao(e) {
@@ -16,15 +17,20 @@ export default function InitialPage({setTokenInLocalStorage}) {
             email: email,
             password: senha
         }
-        const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
-        const promisse = axios.post(url, dados)
-        promisse.then((res) => {
-            setTokenInLocalStorage(res.data)
-            navigate("/hoje")
-            setEmail("")
-            setSenha("")
-        })
-        promisse.then(err => console.log(err))
+        setCarregando(true)
+        setTimeout(() => {
+            const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
+            const promisse = axios.post(url, dados)
+            promisse.then((res) => {
+                setTokenInLocalStorage(res.data)
+                setCarregando(false)
+                navigate("/hoje")
+                setEmail("")
+                setSenha("")
+            })
+            promisse.then(err => console.log(err))
+        }, 300);
+
     }
 
     return (
@@ -45,7 +51,7 @@ export default function InitialPage({setTokenInLocalStorage}) {
                     onChange={(e) => setSenha(e.target.value)}
                     required
                 />
-                <button type="submit">Entrar</button>
+                <button type="submit">{carregando ? <Loading width={100} height={100}/> : "Entrar"}</button>
             </Form>
             <Link to={"/cadastro"}>
                 <p>Não tem uma conta? Cadastre-se!</p>
@@ -118,5 +124,8 @@ const Form = styled.form`
         background: #52B6FF;
         border: none;
         margin-bottom: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 `

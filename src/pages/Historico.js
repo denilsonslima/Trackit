@@ -2,36 +2,38 @@
 import styled from "styled-components"
 import Footer from "../components/Footer";
 import Heade from "../components/Heade";
-// import axios from "axios";
+import { useState, useEffect} from "react";
+import Calendar from 'react-calendar';
+import "../assets/styles/react_styles.css"
+import axios from "axios";
 
-export default function Historico({ concluido, image, token }) {
-    // const [historico, setHistorico] = useState(undefined)
-    // useEffect(() => {
-    //     const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily"
-    //     renderizar(url)
-    // }, [historico])
+export default function Historico({ concluido, image, token, verificar }) {
+    const [historico, setHistorico] = useState(undefined)
 
-    // function renderizar(url) {
-    //     axios
-    //         .get(url, { headers: { Authorization: `Bearer ${token}` } })
-    //         .then(res => setHistorico(res.data))
-    //         .then(err => console.log(err.mensage))
-    // }
+    useEffect(() => {
+        const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily"
+        renderizar(url)
+        mudar()
+    })
 
-    // if (historico === undefined) {
-    //     return (
-    //         <Main>
-    //             <Heade image={image} />
-    //             <Section1>
-    //                 <Div>
-    //                     <h2>Histórico</h2>
-    //                 </Div>
-    //                 <Descricao>Carregando...</Descricao>
-    //             </Section1>
-    //             <Footer concluido={concluido} />
-    //         </Main>
-    //     )
-    // }
+    function mudar(){
+        const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
+        axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
+        .then(res => {
+            verificar(res.data)
+        })
+        .catch((e) => console.log(e))
+    }
+
+    function renderizar(url) {
+        axios
+            .get(url, { headers: { Authorization: `Bearer ${token}` } })
+            .then(res => {
+                setHistorico(res.data)
+                // console.log(res.data)
+            })
+            .catch(err => console.log(err.mensage))
+    }
 
     return (
         <Main>
@@ -40,7 +42,7 @@ export default function Historico({ concluido, image, token }) {
                 <Div>
                     <h2>Histórico</h2>
                 </Div>
-                <Descricao>Em breve você poderá ver o histórico dos seus hábitos aqui!</Descricao>
+                { historico === undefined ? <Descricao>Em breve você poderá ver o histórico dos seus hábitos aqui!</Descricao> : <Calendar/>}
             </Section1>
             <Footer concluido={concluido} />
         </Main>
@@ -62,12 +64,16 @@ const Main = styled.div`
     }
 `
 const Section1 = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     height: calc(95vh - 160px);
     padding: 0 20px 20px;
     margin: 80px 0;
     overflow-y: scroll;
 `
 const Div = styled.div`
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -85,6 +91,7 @@ const Div = styled.div`
 
 `
 const Descricao = styled.div`
+    width: 100%;
     font-family: 'Lexend Deca';
     font-style: normal;
     font-weight: 400;

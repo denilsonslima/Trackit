@@ -6,7 +6,7 @@ export default function Footer({concluido}){
     return (
         <Footerr>
                 <p onClick={() => navigate("/habito")}>Hábitos</p>
-                <p>Histórico</p>
+                <p onClick={() => navigate("/historico")}>Histórico</p>
                 <Div onClick={() => navigate("/hoje")} concluido={concluido}>
                     <div className="div">
                         <div>Hoje</div>

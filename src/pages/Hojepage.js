@@ -4,44 +4,45 @@ import Heade from "../components/Heade";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { BsCheckLg } from "react-icons/bs"
+import dayjs from 'dayjs'
+require("dayjs/locale/pt-br")
 
 export default function Hoje({ token, image, concluido, verificar }) {
     const [meusHabitos, setMeusHabitos] = useState([])
-
+    const [check, setChek] = useState(false)
     useEffect(() => {
         const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
-        renderizar(url)
-    })
-
-    function renderizar(url) {
         const promisse = axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
         promisse.then(res => {
-            setMeusHabitos(res.data)
+            setMeusHabitos([...res.data])
             verificar(res.data)
         })
         promisse.catch((e) => console.log(e))
-    }
+    }, [check])
 
     function verificarConcluido(id, feito){
         const url = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`
         const url1 = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`
         if(!feito){
             const promisse = axios.post(url,{}, { headers: { Authorization: `Bearer ${token}` }})
-            promisse.then(() => console.log("feito"))
+            promisse.then(() => setChek(!check))
             promisse.catch((err) => console.log(err.message))
         } else {
             const promisse = axios.post(url1,{}, { headers: { Authorization: `Bearer ${token}` }})
-            promisse.then(() => console.log("desfeito"))
+            promisse.then(() => setChek(!check))
             promisse.catch((err) => console.log(err.message))
         }
     }
+    let dat = dayjs() .locale('pt-br') .format(`dddd, DD/MM`);
+    let data = (dat[0].toUpperCase() + dat.slice(1)).replace("-feira", "")
 
+    
     return (
         <Main>
             <Heade image={image} />
             <Section1>
                 <Div cor={concluido > 0 ? "#8FC549" : "#BABABA"}>
-                    <h2>Segunda, 17/05</h2>
+                    <h2>{data}</h2>
                     <span>{concluido > 0 ?  `${concluido}% dos hábitos concluídos` : "Nenhum hábito concluído ainda"}</span>
                 </Div>
                 <Hab>

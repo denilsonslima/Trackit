@@ -4,6 +4,8 @@ import Footer from "../components/Footer";
 import Heade from "../components/Heade";
 import axios from "axios";
 import { RiDeleteBin6Line } from "react-icons/ri"
+import Loading from "../components/Loading";
+import diaSemana from "../constants/diasSemana";
 
 export default function Hoje({ token, image, concluido, verificar }) {
     const [addHabito, setAddHabito] = useState(false)
@@ -11,44 +13,35 @@ export default function Hoje({ token, image, concluido, verificar }) {
     const [input, setInput] = useState("")
     const [meusHabitos, setMeusHabitos] = useState([])
     const [chegou, setChegou] = useState(false)
-    const diasSemana = [
-        { id: 0, name: "D" },
-        { id: 1, name: "S" },
-        { id: 2, name: "T" },
-        { id: 3, name: "Q" },
-        { id: 4, name: "Q" },
-        { id: 5, name: "S" },
-        { id: 6, name: "S" },
-    ]
-    
-    useEffect(() => {
-        const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
-        renderizar(url)
-        mudar()
-    })
+    const [carregando, setCarregando] = useState(false)
+    const [check, setChek] = useState(false)    
+    const diasSemana = diaSemana
 
-    function renderizar(url) {
-        const promisse = axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
-        promisse.then(res => {
-            setMeusHabitos([...res.data])
-            setChegou(true)
-        })
-        promisse.catch((e) => console.log(e))
-    }
-
-    function mudar(){
+    function mudar() {
         const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
         axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
-        .then(res => {
-            verificar(res.data)
-        })
-        .catch((e) => console.log(e))
+            .then(res => {
+                verificar(res.data)
+            })
+            .catch((e) => console.log(e))
     }
+
+    useEffect(() => {
+        const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+        axios
+            .get(url, { headers: { Authorization: `Bearer ${token}` } })
+            .then(res => {
+                setMeusHabitos(res.data)
+                setChegou(true)
+            })
+            .catch((e) => console.log(e))
+        mudar()
+    }, [check])
+
 
     function verifica(e) {
         e.preventDefault()
         if (clicado.length !== 0) {
-            setAddHabito(false)
             const dados = {
                 name: input,
                 days: clicado
@@ -56,19 +49,23 @@ export default function Hoje({ token, image, concluido, verificar }) {
             criarHabito(dados)
             setClicado([])
             setInput("")
-            verificar()
         }
     }
 
     function criarHabito(dados) {
-        const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
-        const config = { headers: { Authorization: `Bearer ${token}` } }
-        const promisse = axios.post(url, dados, config)
-        promisse.then(() => {
-            renderizar(url)
-            setClicado([])
-        })
-        promisse.catch((err) => console.log(err))
+        setCarregando(true)
+        setTimeout(() => {
+            const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+            const config = { headers: { Authorization: `Bearer ${token}` } }
+            const promisse = axios.post(url, dados, config)
+            promisse.then(res => {
+                setClicado([])
+                setCarregando(false)
+                setAddHabito(false)
+                setChek(!check)
+            })
+            promisse.catch((err) => console.log(err))
+        }, 500);
     }
 
     function add(a, i) {
@@ -83,12 +80,9 @@ export default function Hoje({ token, image, concluido, verificar }) {
 
     function deletarHabito(id) {
         let a = id
-        const url1 = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
         const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/" + a.toString()
         const promisse = axios.delete(url, { headers: { Authorization: `Bearer ${token}` } })
-        promisse.then(() =>
-            renderizar(url1)
-        )
+        promisse.then(() => setChek(!check) )
         promisse.catch(e => console.log(e))
     }
 
@@ -96,7 +90,7 @@ export default function Hoje({ token, image, concluido, verificar }) {
         return (
             <Main>
                 <Heade image={image} />
-                <Section1>
+                <Section>
                     <Div>
                         <h2>Meus hábitos</h2>
                         <Botao>+</Botao>
@@ -108,8 +102,8 @@ export default function Hoje({ token, image, concluido, verificar }) {
                             Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
                         </h2>
                     </Descricao>
-                </Section1>
-                <Footer concluido={concluido}/>
+                </Section>
+                <Footer concluido={concluido} />
             </Main>
         )
     }
@@ -117,7 +111,7 @@ export default function Hoje({ token, image, concluido, verificar }) {
     return (
         <Main>
             <Heade image={image} />
-            <Section1>
+            <Section>
                 <Div>
                     <h2>Meus hábitos</h2>
                     <Botao onClick={() => setAddHabito(true)}>+</Botao>
@@ -146,7 +140,7 @@ export default function Hoje({ token, image, concluido, verificar }) {
                     </div>
                     <div>
                         <p onClick={() => setAddHabito(false)}>Cancelar</p>
-                        <button type="submit">Salvar</button>
+                        <button type="submit">{carregando ? <Loading width={40} height={40} /> : "Salvar"}</button>
                     </div>
                 </Modal>
                 <Descricao
@@ -171,17 +165,17 @@ export default function Hoje({ token, image, concluido, verificar }) {
                                     </Btn>
                                 )}
                             </div>
-                            <RiDeleteBin6Line onClick={() => deletarHabito(d.id)}/>
+                            <RiDeleteBin6Line onClick={() => deletarHabito(d.id)} />
                         </div>
                     )}
                 </Hab>
-            </Section1>
-            <Footer concluido={concluido}/>
+            </Section>
+            <Footer concluido={concluido} />
         </Main>
     )
 }
 
-const Main = styled.div`
+const Main = styled.main`
     position: relative;
     max-width: 500px;
     width: 100vw;
@@ -196,7 +190,7 @@ const Main = styled.div`
     }
 `
 
-const Section1 = styled.div`
+const Section = styled.section`
     height: calc(95vh - 160px);
     padding: 0 20px 20px;
     margin: 80px 0;
@@ -256,19 +250,22 @@ const Modal = styled.form`
         color: transparent;
     }
 
-    div:nth-of-type(1) {
+    > div:nth-of-type(1) {
         margin-top: 10px;
         margin-bottom: 29px;
         display: flex;
         gap: 5px;
     }
 
-    div:nth-of-type(2) {
+    > div:nth-of-type(2) {
         display: flex;
         justify-content: right;
         align-items: center;
         gap: 23px;
-        & button {
+        > button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 84px;
             height: 35px;
             border: none;
@@ -276,9 +273,8 @@ const Modal = styled.form`
             color: #FFFFFF;
             font-size: 16px;
             border-radius: 5px;
-            border: 5px 80% red; 
         }
-        & p {
+        > p {
             width: 69px;
             height: 20px;
             font-family: 'Lexend Deca';
