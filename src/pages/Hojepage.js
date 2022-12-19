@@ -52,7 +52,7 @@ export default function Hoje() {
                     {meusHabitos.map((d) =>
                         <div key={d.id}>
                             <h4>{d.name}</h4>
-                            <span>Sequência atual: {d.currentSequence} dias <br/> Seu recorde: {d.highestSequence} dias</span>
+                            <span>Sequência atual: <strong style={d.done ? {color: "#8FC549"} : {color: "#666666"}}>{d.currentSequence} dias</strong> <br/> Seu recorde: <strong style={d.currentSequence === d.highestSequence && d.highestSequence !== 0? {color: "#8FC549"} : {color: "#666666"}}>{d.highestSequence} dias</strong></span>
                             <Check onClick={() => verificarConcluido(d.id, d.done)} cor={d.done ? "#8FC549" : "#EBEBEB"}>
                                 <BsCheckLg />
                             </Check>
@@ -115,12 +115,14 @@ const Hab = styled.section`
     > div {
         min-height: 94px;
         position: relative;
-        max-width: 340px;
         padding: 15px;
         margin: 20px auto 0;
         background-color: #FFFFFF;
         border-radius: 5px;
         > h4 {
+            max-width: 75%;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
             font-family: 'Lexend Deca';
             font-style: normal;
             font-weight: 400;

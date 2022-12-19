@@ -2,7 +2,6 @@ import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
 import {
     CircularProgressbar,
-    CircularProgressbarWithChildren,
     buildStyles
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -43,11 +42,9 @@ const Footerr = styled.footer`
     position: absolute;
     bottom: 0;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Lexend Deca';
+    font-size: 20px;
     & p {
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 20px;
         line-height: 22px;
         text-align: center;
         color: #52B6FF;

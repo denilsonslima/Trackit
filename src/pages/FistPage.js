@@ -318,12 +318,14 @@ const Hab = styled.section`
     min-height: 91px;
     & div {
         position: relative;
-        max-width: 340px;
         padding: 15px;
         margin: 20px auto 0;
         background-color: #FFFFFF;
         border-radius: 5px;
         & h4 {
+            max-width: 90%;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
             font-family: 'Lexend Deca';
             font-style: normal;
             font-weight: 400;
