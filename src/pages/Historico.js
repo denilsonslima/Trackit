@@ -6,9 +6,11 @@ import { useState, useEffect} from "react";
 import Calendar from 'react-calendar';
 import "../assets/styles/react_styles.css"
 import axios from "axios";
+import useMyProvider from "../context/context";
 
-export default function Historico({ concluido, image, token, verificar }) {
+export default function Historico({verificar }) {
     const [historico, setHistorico] = useState(undefined)
+    const {concluido, image, token} = useMyProvider()
 
     useEffect(() => {
         const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily"
@@ -30,7 +32,6 @@ export default function Historico({ concluido, image, token, verificar }) {
             .get(url, { headers: { Authorization: `Bearer ${token}` } })
             .then(res => {
                 setHistorico(res.data)
-                // console.log(res.data)
             })
             .catch(err => console.log(err.mensage))
     }

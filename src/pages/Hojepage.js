@@ -4,21 +4,24 @@ import Heade from "../components/Heade";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { BsCheckLg } from "react-icons/bs"
+import useMyProvider from "../context/context";
 import dayjs from 'dayjs'
 require("dayjs/locale/pt-br")
 
-export default function Hoje({ token, image, concluido, verificar }) {
+export default function Hoje() {
     const [meusHabitos, setMeusHabitos] = useState([])
-    const [check, setChek] = useState(false)
+    const [check, setChek] = useState(false) 
+    const { token, image, concluido, verificar } = useMyProvider()
+
     useEffect(() => {
         const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
         const promisse = axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
         promisse.then(res => {
             setMeusHabitos([...res.data])
-            verificar(res.data)
+            verificar()
         })
         promisse.catch((e) => console.log(e))
-    }, [check])
+    }, [check, verificar, token])
 
     function verificarConcluido(id, feito){
         const url = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`

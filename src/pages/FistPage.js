@@ -6,8 +6,9 @@ import axios from "axios";
 import { RiDeleteBin6Line } from "react-icons/ri"
 import Loading from "../components/Loading";
 import diaSemana from "../constants/diasSemana";
+import useMyProvider from "../context/context";
 
-export default function Hoje({ token, image, concluido, verificar }) {
+export default function Hoje() {
     const [addHabito, setAddHabito] = useState(false)
     const [clicado, setClicado] = useState([])
     const [input, setInput] = useState("")
@@ -16,15 +17,7 @@ export default function Hoje({ token, image, concluido, verificar }) {
     const [carregando, setCarregando] = useState(false)
     const [check, setChek] = useState(false)    
     const diasSemana = diaSemana
-
-    function mudar() {
-        const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
-        axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
-            .then(res => {
-                verificar(res.data)
-            })
-            .catch((e) => console.log(e))
-    }
+    const { token, image, concluido, verificar} = useMyProvider()
 
     useEffect(() => {
         const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
@@ -33,11 +26,10 @@ export default function Hoje({ token, image, concluido, verificar }) {
             .then(res => {
                 setMeusHabitos(res.data)
                 setChegou(true)
+                verificar()
             })
             .catch((e) => console.log(e))
-        mudar()
-    }, [check])
-
+    }, [check, token, verificar])
 
     function verifica(e) {
         e.preventDefault()
@@ -58,7 +50,7 @@ export default function Hoje({ token, image, concluido, verificar }) {
             const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
             const config = { headers: { Authorization: `Bearer ${token}` } }
             const promisse = axios.post(url, dados, config)
-            promisse.then(res => {
+            promisse.then(() => {
                 setClicado([])
                 setCarregando(false)
                 setAddHabito(false)

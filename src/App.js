@@ -3,14 +3,13 @@ import InitialPage from "./pages/Login";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/Cadastro";
 import FistPage from "./pages/FistPage";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Hoje from "./pages/Hojepage";
 import Historico from "./pages/Historico";
+import useMyProvider from "./context/context";
 
 function App() {
-  const [token, setToken] = useState("")
-  const [image, setImage] = useState("")
-  const [concluido, setConcluido] = useState(0)
+  const { token, setToken, setImage, setConcluido } = useMyProvider()
 
   function setTokenInLocalStorage(dados) {
     setToken(dados.token);
@@ -19,12 +18,12 @@ function App() {
     localStorage.setItem('lista', exemploSerializado);
   }
 
-  function verificar(dados) {
-    const total = dados.length
-    const feito = dados.filter((e) => e.done === true)
-    const porcentagem = Number((feito.length / total) * 100).toFixed(0)
-    setConcluido(porcentagem)
-  }
+  // function verificar(dados) {
+  //   const total = dados.length
+  //   const feito = dados.filter((e) => e.done === true)
+  //   const porcentagem = Number((feito.length / total) * 100).toFixed(0)
+  //   setConcluido(porcentagem)
+  // }
 
   useEffect(() => {
     const token = localStorage.getItem('lista');
@@ -42,9 +41,9 @@ function App() {
         <Routes>
           <Route path="/" element={<InitialPage setTokenInLocalStorage={setTokenInLocalStorage} />}></Route>
           <Route path="/cadastro" element={<LoginPage />}></Route>
-          {token && <Route path="/habito" element={<FistPage token={token} image={image} concluido={concluido} verificar={verificar}/>}></Route>}
-          {token && <Route path="/hoje" element={<Hoje token={token} image={image} concluido={concluido} verificar={verificar} />}></Route>}
-          <Route path="/historico" element={<Historico image={image} concluido={concluido} token={token} verificar={verificar}/>}></Route>
+          <Route path="/habito" element={<FistPage />}></Route>
+          <Route path="/hoje" element={<Hoje />}></Route>
+          <Route path="/historico" element={<Historico />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

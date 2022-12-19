@@ -1,17 +1,33 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
+import {
+    CircularProgressbar,
+    CircularProgressbarWithChildren,
+    buildStyles
+} from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
-export default function Footer({concluido}){
+
+export default function Footer({ concluido }) {
     const navigate = useNavigate()
     return (
         <Footerr>
-                <p onClick={() => navigate("/habito")}>Hábitos</p>
-                <p onClick={() => navigate("/historico")}>Histórico</p>
-                <Div onClick={() => navigate("/hoje")} concluido={concluido}>
-                    <div className="div">
-                        <div>Hoje</div>
-                    </div>
-                </Div>
+            <p onClick={() => navigate("/habito")}>Hábitos</p>
+            <p onClick={() => navigate("/historico")}>Histórico</p>
+            <Div onClick={() => navigate("/hoje")} concluido={concluido}>
+                <CircularProgressbar
+                    value={concluido}
+                    text={`Hoje`}
+                    background
+                    backgroundPadding={6}
+                    styles={buildStyles({
+                        backgroundColor: "#3e98c7",
+                        textColor: "#fff",
+                        pathColor: "#fff",
+                        trailColor: "transparent"
+                    })}
+                />
+            </Div>
         </Footerr>
     )
 }
@@ -47,34 +63,4 @@ const Div = styled.div`
     bottom: 10px;
     left: calc(50% - 90px/2);
     overflow: hidden;
-    .div {
-        background: conic-gradient(white ${props => props.concluido + "%"}, #52B6FF 0);
-        position: absolute;
-        bottom: 10%;
-        left: 10%;
-        width: 80%;
-        height: 80%;
-        border-radius: 50%;
-        & div {
-            width: 75%;
-            height: 75%;
-            background-color: #52B6FF;
-            position: absolute;
-            bottom: 12.5%;
-            left: 12.5%;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 3;
-            font-family: 'Lexend Deca';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 17.976px;
-            line-height: 22px;
-            text-align: center;
-            color: #FFFFFF;
-        }
-    }
-
 `
