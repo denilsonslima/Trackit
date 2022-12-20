@@ -3,16 +3,19 @@ import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import Loading from "../components/Loading";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("")
     const [senha, setSenha] = useState("")
     const [name, setName] = useState("")
     const [foto, setFoto] = useState("")
+    const [carregando, setCarregando] = useState(false)
     const navigate = useNavigate()
 
-    function verificar(e){
+    function verificar(e) {
         e.preventDefault()
+        setCarregando(true)
         const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up"
         const dados = {
             email: email,
@@ -20,9 +23,17 @@ export default function LoginPage() {
             image: foto,
             password: senha
         }
-        const promisse = axios.post(url, dados)
-        promisse.then(() => navigate("/"))
-        promisse.catch(() => console.log("erro"))
+        setTimeout(() => {
+            const promisse = axios.post(url, dados)
+            promisse.then(() => {
+                navigate("/")
+                setCarregando(false)
+            })
+            promisse.catch(() => {
+                alert("Usuário e/ou senha inválidos")
+                setCarregando(false)
+            })
+        }, 300);
     }
 
     return (
@@ -34,6 +45,8 @@ export default function LoginPage() {
                     placeholder="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    style={carregando ? {background: "#F2F2F2"} : {background: "#FFFFFF"}}
+                    disabled={carregando}
                     required
                 />
                 <input
@@ -41,6 +54,8 @@ export default function LoginPage() {
                     placeholder="senha"
                     value={senha}
                     onChange={(e) => setSenha(e.target.value)}
+                    style={carregando ? {background: "#F2F2F2"} : {background: "#FFFFFF"}}
+                    disabled={carregando}
                     required
                 />
                 <input
@@ -48,6 +63,8 @@ export default function LoginPage() {
                     placeholder="nome"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    style={carregando ? {background: "#F2F2F2"} : {background: "#FFFFFF"}}
+                    disabled={carregando}
                     required
                 />
                 <input
@@ -55,9 +72,11 @@ export default function LoginPage() {
                     placeholder="foto"
                     value={foto}
                     onChange={(e) => setFoto(e.target.value)}
+                    style={carregando ? {background: "#F2F2F2"} : {background: "#FFFFFF"}}
+                    disabled={carregando}
                     required
                 />
-                <button type="submit">Entrar</button>
+                <button type="submit"> {carregando ? <Loading width={100} height={100} disabled={carregando}/> : "Cadastrar"}</button>
             </Form>
             <Link to={"/"}>
                 <p>Já tem uma conta? Faça login!</p>
@@ -130,5 +149,8 @@ const Form = styled.form`
         background: #52B6FF;
         border: none;
         margin-bottom: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 `

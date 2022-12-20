@@ -52,7 +52,7 @@ export default function Hoje() {
                     {meusHabitos.map((d) =>
                         <div key={d.id}>
                             <h4>{d.name}</h4>
-                            <span>Sequência atual: <strong style={d.done ? {color: "#8FC549"} : {color: "#666666"}}>{d.currentSequence} dias</strong> <br/> Seu recorde: <strong style={d.currentSequence === d.highestSequence && d.highestSequence !== 0? {color: "#8FC549"} : {color: "#666666"}}>{d.highestSequence} dias</strong></span>
+                            <span>Sequência atual: <strong style={d.done ? {color: "#8FC549"} : {color: "#666666"}}>{d.currentSequence} {d.currentSequence > 1 ? "dias" : "dia"}</strong> <br/> Seu recorde: <strong style={d.currentSequence === d.highestSequence && d.highestSequence > 0 && d.done? {color: "#8FC549"} : {color: "#666666"}}>{d.highestSequence} {d.highestSequence > 1 ? "dias" : "dia"}</strong></span>
                             <Check onClick={() => verificarConcluido(d.id, d.done)} cor={d.done ? "#8FC549" : "#EBEBEB"}>
                                 <BsCheckLg />
                             </Check>

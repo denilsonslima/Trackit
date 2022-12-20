@@ -23,7 +23,6 @@ export default function InitialPage({ setTokenInLocalStorage }) {
             const promisse = axios.post(url, dados)
             promisse.then((res) => {
                 setTokenInLocalStorage(res.data)
-
                 navigate("/hoje")
                 setEmail("")
                 setSenha("")
