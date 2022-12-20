@@ -41,7 +41,7 @@ function App() {
         <Routes>
           <Route path="/" element={<InitialPage setTokenInLocalStorage={setTokenInLocalStorage} />}></Route>
           <Route path="/cadastro" element={<LoginPage />}></Route>
-          <Route path="/habito" element={<FistPage />}></Route>
+          <Route path="/habitos" element={<FistPage />}></Route>
           <Route path="/hoje" element={<Hoje />}></Route>
           <Route path="/historico" element={<Historico />}></Route>
         </Routes>
