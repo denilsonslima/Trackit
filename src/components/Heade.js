@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 export default function Heade({image}) {
     return (
-        <Main>
+        <Main data-test="header">
             <p>TrackIt</p>
             <div>
                 <img src={image} alt="Perfil"/>

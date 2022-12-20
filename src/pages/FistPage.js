@@ -15,9 +15,9 @@ export default function Hoje() {
     const [meusHabitos, setMeusHabitos] = useState([])
     const [chegou, setChegou] = useState(false)
     const [carregando, setCarregando] = useState(false)
-    const [check, setChek] = useState(false)    
+    const [check, setChek] = useState(false)
     const diasSemana = diaSemana
-    const { token, image, verificar} = useMyProvider()
+    const { token, image, verificar } = useMyProvider()
 
     useEffect(() => {
         const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
@@ -75,11 +75,11 @@ export default function Hoje() {
     }
 
     function deletarHabito(id) {
-        if(window.confirm("Tem certeza que deseja deletar esse hábito?")){
+        if (window.confirm("Tem certeza que deseja deletar esse hábito?")) {
             let a = id
             const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/" + a.toString()
             const promisse = axios.delete(url, { headers: { Authorization: `Bearer ${token}` } })
-            promisse.then(() => setChek(!check) )
+            promisse.then(() => setChek(!check))
             promisse.catch(e => console.log(e))
         }
     }
@@ -112,23 +112,26 @@ export default function Hoje() {
             <Section>
                 <Div>
                     <h2>Meus hábitos</h2>
-                    <Botao onClick={() => setAddHabito(true)}>+</Botao>
+                    <Botao data-test="habit-create-btn" onClick={() => setAddHabito(true)}>+</Botao>
                 </Div>
                 <Modal
+                    data-test="habit-create-container"
                     display={addHabito ? "block" : "none"}
                     onSubmit={verifica}
                 >
                     <input
+                        data-test="habit-name-input"
                         type="text"
                         placeholder="nome do hábito"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
-                        style={carregando ? {background: "#F2F2F2"} : {background: "#FFFFFF"}}
+                        style={carregando ? { background: "#F2F2F2" } : { background: "#FFFFFF" }}
                         disabled={carregando}
                         required />
                     <div>
                         {diasSemana.map((e) =>
                             <Btn
+                                data-test="habit-day"
                                 key={e.id}
                                 cor={clicado.includes(e.id) ? "#CFCFCF" : "#FFFFFF"}
                                 color={clicado.includes(e.id) ? "#FFFFFF" : "#DBDBDB"}
@@ -140,8 +143,8 @@ export default function Hoje() {
                         )}
                     </div>
                     <div>
-                        <p onClick={() => setAddHabito(false)}>Cancelar</p>
-                        <button type="submit">{carregando ? <Loading width={40} height={40} /> : "Salvar"}</button>
+                        <p data-test="habit-create-cancel-btn" onClick={() => setAddHabito(false)}>Cancelar</p>
+                        <button data-test="habit-create-save-btn" type="submit">{carregando ? <Loading width={40} height={40} /> : "Salvar"}</button>
                     </div>
                 </Modal>
                 <Descricao
@@ -153,11 +156,12 @@ export default function Hoje() {
                 </Descricao>
                 <Hab>
                     {meusHabitos.map((d) =>
-                        <div key={d.id}>
-                            <h4>{d.name}</h4>
+                        <div data-test="habit-container" key={d.id}>
+                            <h4 data-test="habit-name">{d.name}</h4>
                             <div>
                                 {diasSemana.map((e) =>
                                     <Btn
+                                        data-test="habit-name"
                                         key={e.id}
                                         cor={d.days.includes(e.id) ? "#CFCFCF" : "#FFFFFF"}
                                         color={d.days.includes(e.id) ? "#FFFFFF" : "#DBDBDB"}
@@ -166,12 +170,12 @@ export default function Hoje() {
                                     </Btn>
                                 )}
                             </div>
-                            <RiDeleteBin6Line onClick={() => deletarHabito(d.id)} />
+                            <RiDeleteBin6Line data-test="habit-delete-btn" onClick={() => deletarHabito(d.id)} />
                         </div>
                     )}
                 </Hab>
             </Section>
-            <Footer/>
+            <Footer />
         </Main>
     )
 }

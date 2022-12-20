@@ -40,24 +40,27 @@ export default function InitialPage({ setTokenInLocalStorage }) {
             <HeaderInitial />
             <Form onSubmit={autenticacao}>
                 <input
+                    data-test="email-input"
                     type="email"
                     placeholder="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    style={carregando ? {background: "#F2F2F2"} : {background: "#FFFFFF"}}
+                    style={carregando ? { background: "#F2F2F2" } : { background: "#FFFFFF" }}
                     disabled={carregando}
                     required
                 />
                 <input
+                    data-test="password-input"
                     type="password"
                     placeholder="senha"
                     value={senha}
                     onChange={(e) => setSenha(e.target.value)}
-                    style={carregando ? {background: "#F2F2F2"} : {background: "#FFFFFF"}}
+                    style={carregando ? { background: "#F2F2F2" } : { background: "#FFFFFF" }}
                     disabled={carregando}
                     required
                 />
                 <button
+                    data-test="login-btn"
                     type="submit"
                     disabled={carregando}
                 >
@@ -65,7 +68,7 @@ export default function InitialPage({ setTokenInLocalStorage }) {
                 </button>
             </Form>
             <Link to={"/cadastro"}>
-                <p>Não tem uma conta? Cadastre-se!</p>
+                <p data-test="signup-link">Não tem uma conta? Cadastre-se!</p>
             </Link>
         </Main>
     )

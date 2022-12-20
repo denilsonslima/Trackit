@@ -11,10 +11,10 @@ export default function Footer() {
     const {concluido} = useMyProvider()
     const navigate = useNavigate()
     return (
-        <Footerr>
-            <p onClick={() => navigate("/habito")}>Hábitos</p>
-            <p onClick={() => navigate("/historico")}>Histórico</p>
-            <Div onClick={() => navigate("/hoje")} concluido={concluido}>
+        <Footerr data-test="menu">
+            <p data-test="habit-link" onClick={() => navigate("/habito")}>Hábitos</p>
+            <p data-test="history-link" onClick={() => navigate("/historico")}>Histórico</p>
+            <Div data-test="today-link" onClick={() => navigate("/hoje")} concluido={concluido}>
                 <CircularProgressbar
                     value={concluido}
                     text={`Hoje`}

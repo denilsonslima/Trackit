@@ -41,6 +41,7 @@ export default function LoginPage() {
             <HeaderInitial />
             <Form onSubmit={verificar}>
                 <input
+                data-test="email-input"
                     type="email"
                     placeholder="email"
                     value={email}
@@ -50,6 +51,7 @@ export default function LoginPage() {
                     required
                 />
                 <input
+                data-test="password-input"
                     type="password"
                     placeholder="senha"
                     value={senha}
@@ -59,6 +61,7 @@ export default function LoginPage() {
                     required
                 />
                 <input
+                data-test="user-name-input" 
                     type="text"
                     placeholder="nome"
                     value={name}
@@ -68,6 +71,7 @@ export default function LoginPage() {
                     required
                 />
                 <input
+                data-test="user-image-input"
                     type="url"
                     placeholder="foto"
                     value={foto}
@@ -76,10 +80,10 @@ export default function LoginPage() {
                     disabled={carregando}
                     required
                 />
-                <button type="submit"> {carregando ? <Loading width={100} height={100} disabled={carregando}/> : "Cadastrar"}</button>
+                <button data-test="signup-btn" type="submit"> {carregando ? <Loading width={100} height={100} disabled={carregando}/> : "Cadastrar"}</button>
             </Form>
             <Link to={"/"}>
-                <p>Já tem uma conta? Faça login!</p>
+                <p data-test="login-link">Já tem uma conta? Faça login!</p>
             </Link>
         </Main>
     )
