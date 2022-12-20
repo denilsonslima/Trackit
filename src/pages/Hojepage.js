@@ -45,12 +45,12 @@ export default function Hoje() {
             <Heade image={image} />
             <Section1>
                 <Div cor={concluido > 0 ? "#8FC549" : "#BABABA"}>
-                    <h2>{data}</h2>
+                    <h2 data-test="today">{data}</h2>
                     <span data-test="today-counter" >{concluido > 0 ?  `${concluido}% dos hábitos concluídos` : "Nenhum hábito concluído ainda"}</span>
                 </Div>
                 <Hab>
                     {meusHabitos.map((d) =>
-                        <div key={d.id}>
+                        <div data-test="today-habit-container"  key={d.id}>
                             <h4 data-test="today-habit-name">{d.name}</h4>
                             <p data-test="today-habit-sequence">Sequência atual: <strong style={d.done ? {color: "#8FC549"} : {color: "#666666"}}>{d.currentSequence} {d.currentSequence > 1 ? "dias" : "dia"}</strong></p>
                             <p data-test="today-habit-record">Seu recorde: <strong style={d.currentSequence === d.highestSequence && d.highestSequence > 0 && d.done? {color: "#8FC549"} : {color: "#666666"}}>{d.highestSequence} {d.highestSequence > 1 ? "dias" : "dia"}</strong></p>
