@@ -80,7 +80,7 @@ export default function LoginPage() {
                     disabled={carregando}
                     required
                 />
-                <button data-test="signup-btn" type="submit"> {carregando ? <Loading width={100} height={100} disabled={carregando}/> : "Cadastrar"}</button>
+                <button data-test="signup-btn" type="submit" disabled={carregando}> {carregando ? <Loading width={100} height={100}/> : "Cadastrar"}</button>
             </Form>
             <Link to={"/"}>
                 <p data-test="login-link">Já tem uma conta? Faça login!</p>
