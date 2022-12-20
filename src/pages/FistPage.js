@@ -209,7 +209,6 @@ const Div = styled.div`
 
 const Modal = styled.form`
     display: ${props => props.display};
-    max-width: 340px;
     height: 180px;
     padding: 18px 18px 15px;
     margin: 20px auto 0;

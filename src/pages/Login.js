@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import Loading from "../components/Loading";
 
-export default function InitialPage({setTokenInLocalStorage}) {
+export default function InitialPage({ setTokenInLocalStorage }) {
     const [email, setEmail] = useState("")
     const [senha, setSenha] = useState("")
     const [carregando, setCarregando] = useState(false)
@@ -23,12 +23,15 @@ export default function InitialPage({setTokenInLocalStorage}) {
             const promisse = axios.post(url, dados)
             promisse.then((res) => {
                 setTokenInLocalStorage(res.data)
-                setCarregando(false)
+
                 navigate("/hoje")
                 setEmail("")
                 setSenha("")
             })
-            promisse.then(err => console.log(err))
+            promisse.catch(() => {
+                alert("Usuário e/ou senha inválidos")
+                setCarregando(false)
+            })
         }, 300);
 
     }
@@ -42,6 +45,8 @@ export default function InitialPage({setTokenInLocalStorage}) {
                     placeholder="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    style={carregando ? {background: "#F2F2F2"} : {background: "#FFFFFF"}}
+                    disabled={carregando}
                     required
                 />
                 <input
@@ -49,9 +54,16 @@ export default function InitialPage({setTokenInLocalStorage}) {
                     placeholder="senha"
                     value={senha}
                     onChange={(e) => setSenha(e.target.value)}
+                    style={carregando ? {background: "#F2F2F2"} : {background: "#FFFFFF"}}
+                    disabled={carregando}
                     required
                 />
-                <button type="submit">{carregando ? <Loading width={100} height={100}/> : "Entrar"}</button>
+                <button
+                    type="submit"
+                    disabled={carregando}
+                >
+                    {carregando ? <Loading width={100} height={100} /> : "Entrar"}
+                </button>
             </Form>
             <Link to={"/cadastro"}>
                 <p>Não tem uma conta? Cadastre-se!</p>
