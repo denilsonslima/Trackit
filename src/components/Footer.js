@@ -5,9 +5,10 @@ import {
     buildStyles
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import useMyProvider from "../context/context";
 
-
-export default function Footer({ concluido }) {
+export default function Footer() {
+    const {concluido} = useMyProvider()
     const navigate = useNavigate()
     return (
         <Footerr>

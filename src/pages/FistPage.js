@@ -17,7 +17,7 @@ export default function Hoje() {
     const [carregando, setCarregando] = useState(false)
     const [check, setChek] = useState(false)    
     const diasSemana = diaSemana
-    const { token, image, concluido, verificar} = useMyProvider()
+    const { token, image, verificar} = useMyProvider()
 
     useEffect(() => {
         const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
@@ -34,6 +34,7 @@ export default function Hoje() {
     function verifica(e) {
         e.preventDefault()
         if (clicado.length !== 0) {
+            setCarregando(true)
             const dados = {
                 name: input,
                 days: clicado
@@ -56,7 +57,10 @@ export default function Hoje() {
                 setAddHabito(false)
                 setChek(!check)
             })
-            promisse.catch((err) => console.log(err))
+            promisse.catch((err) => {
+                alert(err.message)
+                setCarregando(false)
+            })
         }, 500);
     }
 
@@ -71,11 +75,13 @@ export default function Hoje() {
     }
 
     function deletarHabito(id) {
-        let a = id
-        const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/" + a.toString()
-        const promisse = axios.delete(url, { headers: { Authorization: `Bearer ${token}` } })
-        promisse.then(() => setChek(!check) )
-        promisse.catch(e => console.log(e))
+        if(window.confirm("Tem certeza que deseja deletar esse hábito?")){
+            let a = id
+            const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/" + a.toString()
+            const promisse = axios.delete(url, { headers: { Authorization: `Bearer ${token}` } })
+            promisse.then(() => setChek(!check) )
+            promisse.catch(e => console.log(e))
+        }
     }
 
     if (!chegou) {
@@ -95,7 +101,7 @@ export default function Hoje() {
                         </h2>
                     </Descricao>
                 </Section>
-                <Footer concluido={concluido} />
+                <Footer />
             </Main>
         )
     }
@@ -117,6 +123,8 @@ export default function Hoje() {
                         placeholder="nome do hábito"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
+                        style={carregando ? {background: "#F2F2F2"} : {background: "#FFFFFF"}}
+                        disabled={carregando}
                         required />
                     <div>
                         {diasSemana.map((e) =>
@@ -124,6 +132,7 @@ export default function Hoje() {
                                 key={e.id}
                                 cor={clicado.includes(e.id) ? "#CFCFCF" : "#FFFFFF"}
                                 color={clicado.includes(e.id) ? "#FFFFFF" : "#DBDBDB"}
+                                disabled={carregando}
                                 onClick={(a) => add(a, e.id)}
                             >
                                 {e.name}
@@ -162,7 +171,7 @@ export default function Hoje() {
                     )}
                 </Hab>
             </Section>
-            <Footer concluido={concluido} />
+            <Footer/>
         </Main>
     )
 }

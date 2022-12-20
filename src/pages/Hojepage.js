@@ -60,7 +60,7 @@ export default function Hoje() {
                     )}
                 </Hab>
             </Section1>
-            <Footer concluido={concluido}/>
+            <Footer />
         </Main>
     )
 }

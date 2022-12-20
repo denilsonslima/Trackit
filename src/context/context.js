@@ -17,7 +17,7 @@ export function MyProvider(props) {
             const total = dados.length
             const feito = dados.filter((e) => e.done === true)
             const porcentagem = Number((feito.length / total) * 100).toFixed(0)
-            setConcluido(porcentagem)
+            setConcluido(isNaN(porcentagem) ? 0 : porcentagem)
         })
         promisse.catch(err => console.lor(err))
     }

@@ -10,7 +10,7 @@ import useMyProvider from "../context/context";
 
 export default function Historico({verificar }) {
     const [historico, setHistorico] = useState(undefined)
-    const {concluido, image, token} = useMyProvider()
+    const {image, token} = useMyProvider()
 
     useEffect(() => {
         const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily"
@@ -45,7 +45,7 @@ export default function Historico({verificar }) {
                 </Div>
                 { historico === undefined ? <Descricao>Em breve você poderá ver o histórico dos seus hábitos aqui!</Descricao> : <Calendar/>}
             </Section1>
-            <Footer concluido={concluido} />
+            <Footer/>
         </Main>
     )
 }
