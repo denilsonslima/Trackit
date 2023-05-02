@@ -36,7 +36,7 @@ export default function Hoje() {
             promisse.catch((err) => console.log(err.message))
         }
     }
-    let dat = dayjs() .locale('pt-br') .format(`dddd, DD/MM`);
+    let dat = dayjs().locale('pt-br').format(`dddd, DD/MM`);
     let data = (dat[0].toUpperCase() + dat.slice(1)).replace("-feira", "")
 
     

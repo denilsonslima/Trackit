@@ -49,6 +49,7 @@ const Footerr = styled.footer`
         line-height: 22px;
         text-align: center;
         color: #52B6FF;
+        cursor: pointer;
     }
 `
 
@@ -61,4 +62,5 @@ const Div = styled.div`
     bottom: 10px;
     left: calc(50% - 90px/2);
     overflow: hidden;
+    cursor: pointer;
 `
