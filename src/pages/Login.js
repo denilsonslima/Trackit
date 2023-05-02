@@ -1,10 +1,9 @@
 import HeaderInitial from "../components/Header/HeaderInitial";
-import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import Loading from "../components/Loading";
-import { Input, Button, Form } from "../assets/styles";
+import { Input, Button, Form, Main, P1 } from "../assets/styles";
 
 export default function SignIn({ setTokenInLocalStorage }) {
   const [form, setForm] = useState({});
@@ -65,38 +64,13 @@ export default function SignIn({ setTokenInLocalStorage }) {
         </Button>
       </Form>
       <Link to={"/cadastro"}>
-        <p data-test="signup-link">Não tem uma conta? Cadastre-se!</p>
+        <P1 data-test="signup-link">Não tem uma conta? Cadastre-se!</P1>
       </Link>
     </Main>
   );
 }
 
-const Main = styled.div`
-  max-width: 500px;
-  width: 100vw;
-  max-height: 100vh;
-  height: 95%;
-  background-color: #ffffff;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  padding: 0 36px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  p {
-    font-family: "Lexend Deca";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 13.976px;
-    line-height: 17px;
-    text-align: center;
-    text-decoration-line: underline;
-    color: #52b6ff;
-    margin-top: 25px;
-  }
 
-  @media (max-width: 400px) {
-    height: 100%;
-  }
-`;
+
 
 
